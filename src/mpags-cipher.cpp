@@ -6,10 +6,13 @@
 // For std::isalpha and std::isupper
 #include <cctype>
 
+// For file streams
+#include <fstream>
+
 // Function include
 #include "TransformChar.hpp"
 #include "ProcessCommandLine.hpp"
-
+// #include "RunCaesarCipher.hpp"
 
 // Main function of the mpags-cipher program
 int main(int argc, char *argv[])
@@ -61,32 +64,56 @@ int main(int argc, char *argv[])
   char inputChar{'x'};
   std::string inputText{""};
 
+  // std::cout<<inputFile<<std::endl;
+
   // Read in user input from stdin/file
   // Warn that input file option not yet implemented
-  if (!inputFile.empty())
+  if (inputFile.empty())
   {
-    std::cout << "[warning] input from file ('"
-              << inputFile
-              << "') not implemented yet, using stdin\n";
+    // Loop over each character from user input
+    // (until Return then CTRL-D (EOF) pressed)
+    while (std::cin >> inputChar)
+    {
+      inputText += transformChar(inputChar);
+    }
   }
-
-  // Loop over each character from user input
-  // (until Return then CTRL-D (EOF) pressed)
-  while (std::cin >> inputChar)
+  else
   {
-    inputText += transformChar(inputChar);
+    //Instantiate an instance of an ofstream type
+    std::ifstream in_file{inputFile};
+    bool ok_to_read{in_file.good()};
+    if (ok_to_read)
+    {
+      while (in_file >> inputChar)
+      {
+        inputText += transformChar(inputChar);
+      }
+    }
+    else
+    {
+      std::cerr << "[error] Failed to read the input file" << std::endl;
+    }
   }
 
   // Output the transliterated text
   // Warn that output file option not yet implemented
   if (!outputFile.empty())
   {
-    std::cout << "[warning] output to file ('"
-              << outputFile
-              << "') not implemented yet, using stdout\n";
+    std::ofstream out_file{outputFile, std::ios::app};
+    bool ok_to_write{out_file.good()};
+    if (ok_to_write)
+    {
+      out_file << inputText << std::endl;
+    }
+    else
+    {
+      std::cerr << "[error] Failed to open the output file" << std::endl;
+    }
   }
-
-  std::cout << inputText << std::endl;
+  else
+  {
+    std::cout << inputText << std::endl;
+  }
 
   // No requirement to return from main, but we do so for clarity
   // and for consistency with other functions
