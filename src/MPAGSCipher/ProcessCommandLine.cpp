@@ -4,14 +4,15 @@
 
 #include "ProcessCommandLine.hpp"
 
-
 //process command line function
 bool processCommandLine(
     const std::vector<std::string> &cmdLineArgs,
     bool &helpRequested,
     bool &versionRequested,
     std::string &inputFile,
-    std::string &outputFile)
+    std::string &outputFile,
+    std::string &keyName,
+    bool &encrypt)
 {
   // Add a typedef that assigns another name for the given type for clarity
   typedef std::vector<std::string>::size_type size_type;
@@ -64,6 +65,35 @@ bool processCommandLine(
         ++i;
       }
     }
+
+    else if (cmdLineArgs[i] == "-key")
+    {
+      // Handle encryption key option
+      // Next element is key unless -o is the last argument
+      if (i == nCmdLineArgs - 1)
+      {
+        std::cerr << "[error] -key requires a key argument" << std::endl;
+        // exit main with non-zero return to indicate failure
+        return false;
+      }
+      else
+      {
+        // Got key, so assign value and advance past it
+        keyName = cmdLineArgs[i + 1];
+        ++i;
+      }
+    }
+
+    else if (cmdLineArgs[i] == "--encrypt")
+    {
+      encrypt = true;
+    }
+
+    else if (cmdLineArgs[i] == "--decrypt")
+    {
+      encrypt = false;
+    }
+
     else
     {
       // Have an unknown flag to output error message and return non-zero

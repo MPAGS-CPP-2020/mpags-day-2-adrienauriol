@@ -25,9 +25,11 @@ int main(int argc, char *argv[])
   bool versionRequested{false};
   std::string inputFile{""};
   std::string outputFile{""};
+  std::string keyName{""};
+  bool encrypt{true};
 
   // Processing the command line. Exit if error occurs.
-  if (!processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile))
+  if (!processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, keyName, encrypt))
   {
     return 1;
   }
@@ -45,7 +47,10 @@ int main(int argc, char *argv[])
         << "  -i FILE          Read text to be processed from FILE\n"
         << "                   Stdin will be used if not supplied\n\n"
         << "  -o FILE          Write processed text to FILE\n"
-        << "                   Stdout will be used if not supplied\n\n";
+        << "                   Stdout will be used if not supplied\n\n"
+        << "  -key ARG         Key used for encrypt/decrypt\n\n"
+        << "  --encrypt        Encrypt the message (default)\n\n"
+        << "  --decrypt        Decrypt the message\n\n";
     // Help requires no further action, so return from main
     // with 0 used to indicate success
     return 0;
