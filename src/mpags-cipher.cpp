@@ -12,7 +12,7 @@
 // Function include
 #include "TransformChar.hpp"
 #include "ProcessCommandLine.hpp"
-// #include "RunCaesarCipher.hpp"
+#include "RunCaesarCipher.hpp"
 
 // Main function of the mpags-cipher program
 int main(int argc, char *argv[])
@@ -25,11 +25,11 @@ int main(int argc, char *argv[])
   bool versionRequested{false};
   std::string inputFile{""};
   std::string outputFile{""};
-  std::string keyName{""};
+  std::string key{""};
   bool encrypt{true};
 
   // Processing the command line. Exit if error occurs.
-  if (!processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, keyName, encrypt))
+  if (!processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, key, encrypt))
   {
     return 1;
   }
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         << "                   Stdin will be used if not supplied\n\n"
         << "  -o FILE          Write processed text to FILE\n"
         << "                   Stdout will be used if not supplied\n\n"
-        << "  -key ARG         Key used for encrypt/decrypt\n\n"
+        << "  -key ARG         Key used for encrypt/decrypt (default = 0)\n\n"
         << "  --encrypt        Encrypt the message (default)\n\n"
         << "  --decrypt        Decrypt the message\n\n";
     // Help requires no further action, so return from main
@@ -68,8 +68,7 @@ int main(int argc, char *argv[])
   // Initialise variables for processing input text
   char inputChar{'x'};
   std::string inputText{""};
-
-  // std::cout<<inputFile<<std::endl;
+  std::string outputText{""};
 
   // Read in user input from stdin/file
   // Warn that input file option not yet implemented
@@ -100,6 +99,20 @@ int main(int argc, char *argv[])
     }
   }
 
+  // outputText = inputText;
+
+  unsigned long keyCaesar{99999};
+  if (!key.empty())
+  {
+    keyCaesar = std::stoul(key);
+  }
+  else
+  {
+    keyCaesar = 0;
+  }
+  
+  outputText = runCaesarCipher(inputText, keyCaesar, encrypt);
+
   // Output the transliterated text
   // Warn that output file option not yet implemented
   if (!outputFile.empty())
@@ -108,7 +121,7 @@ int main(int argc, char *argv[])
     bool ok_to_write{out_file.good()};
     if (ok_to_write)
     {
-      out_file << inputText << std::endl;
+      out_file << outputText << std::endl;
     }
     else
     {
@@ -117,7 +130,7 @@ int main(int argc, char *argv[])
   }
   else
   {
-    std::cout << inputText << std::endl;
+    std::cout << outputText << std::endl;
   }
 
   // No requirement to return from main, but we do so for clarity

@@ -5,9 +5,8 @@
 
 //Caesar cipher implementation
 std::string runCaesarCipher(
-    const std::string& inputText,
-    const size_t key,
-    const bool encrypt
-);
+    const std::string &inputText,
+    const unsigned long &keyCaesar,
+    const bool encrypt);
 
 #endif //MPAGSCIPHER_RUNCAESARCIPHER_HPP

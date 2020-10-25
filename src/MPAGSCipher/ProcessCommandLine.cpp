@@ -4,6 +4,7 @@
 
 #include "ProcessCommandLine.hpp"
 
+
 //process command line function
 bool processCommandLine(
     const std::vector<std::string> &cmdLineArgs,
@@ -11,7 +12,7 @@ bool processCommandLine(
     bool &versionRequested,
     std::string &inputFile,
     std::string &outputFile,
-    std::string &keyName,
+    std::string &key,
     bool &encrypt)
 {
   // Add a typedef that assigns another name for the given type for clarity
@@ -79,7 +80,7 @@ bool processCommandLine(
       else
       {
         // Got key, so assign value and advance past it
-        keyName = cmdLineArgs[i + 1];
+        key = cmdLineArgs[i + 1];
         ++i;
       }
     }
