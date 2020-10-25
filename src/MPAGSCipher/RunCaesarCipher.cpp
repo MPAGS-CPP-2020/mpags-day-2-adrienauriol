@@ -10,6 +10,7 @@ std::string runCaesarCipher(
     const unsigned long &keyCaesar,
     const bool encrypt)
 {
+    bool debug{true};
     std::string outCaesarCipher{""};
     unsigned int indexAlphabet{999};
     int sizeInput{999};
@@ -32,9 +33,12 @@ std::string runCaesarCipher(
         for (int i = 0; i < sizeInput; i++)
         {
             indexAlphabet = alphabet.find(inputText[i]);
-            std::cout << "indexAlphabet : " << indexAlphabet << std::endl;
-            std::cout << "key : " << keyCaesar << std::endl;
-            std::cout << "(indexAlphabet - key) : " << (indexAlphabet - keyCaesar) << std::endl;
+            if (debug)
+            {
+                std::cout << "indexAlphabet : " << indexAlphabet << std::endl;
+                std::cout << "key : " << keyCaesar << std::endl;
+                std::cout << "(indexAlphabet - key) : " << (indexAlphabet - keyCaesar) << std::endl;
+            }
             outCaesarCipher += alphabet[(indexAlphabet - keyCaesar) % 26];
         }
     }
