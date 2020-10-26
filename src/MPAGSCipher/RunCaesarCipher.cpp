@@ -39,7 +39,7 @@ std::string runCaesarCipher(
                 std::cout << "key : " << keyCaesar << std::endl;
                 std::cout << "(indexAlphabet - key) : " << (indexAlphabet - keyCaesar) << std::endl;
             }
-            outCaesarCipher += alphabet[(indexAlphabet+26 - keyCaesar +26) % 26]; //+26 are here to ensure that (indexAlphabet-keyCaesar) stay >0
+            outCaesarCipher += alphabet[(indexAlphabet+26000 - keyCaesar +26000) % 26]; //+26000 (works with any multiple of 26) are here to ensure that (indexAlphabet-keyCaesar) stay >0 (even with huge value of keyCaesar)
         }
     }
     // outCaesarCipher = inputText;
